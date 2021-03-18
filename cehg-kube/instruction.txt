@@ -19,3 +19,6 @@ kubectl get deploy,po
 kubectl get svc
 kubectl port-forward fcehg-7bf5c4979-tqc6z 30000
 kubectl exec --stdin -i --tty deployment.apps/fcehg -- npm start
+kubectl expose pod express-node-5447c78d4-528zd --port=3001 --name=express-node-scv-1 --type=NodePort
+kubectl cluster-info
+curl http://192.168.43.142:31431/ping
