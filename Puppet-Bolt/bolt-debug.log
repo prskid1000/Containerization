@@ -1,0 +1,30 @@
+2021-03-17T16:34:36.044248 INFO   [main] [Bolt::Logger] Loaded project from '/home/prskid1000/Puppet-Bolt'
+2021-03-17T16:34:36.053051 DEBUG  [main] [Bolt::PAL] Loading modules from /opt/puppetlabs/bolt/lib/ruby/gems/2.7.0/gems/bolt-3.3.0/bolt-modules:/home/prskid1000/Puppet-Bolt/modules:/home/prskid1000/Puppet-Bolt/.modules:/opt/puppetlabs/bolt/lib/ruby/gems/2.7.0/gems/bolt-3.3.0/modules
+2021-03-17T16:34:36.055363 DEBUG  [main] [Bolt::Inventory] Loaded inventory from /home/prskid1000/Puppet-Bolt/inventory.yaml
+2021-03-17T16:34:36.158253 DEBUG  [main] [Bolt::Executor] Started with 100 max thread(s)
+2021-03-17T16:34:36.317530 INFO   [event-publisher] [Bolt::Outputter::Logger] Starting: plan apache::install
+2021-03-17T16:34:36.329880 INFO   [event-publisher] [Bolt::Outputter::Logger] Starting: Install Apache using the package task on target1, target2
+2021-03-17T16:34:36.571468 INFO   [] [Bolt::Executor] Running task package with '{"action":"install","name":"apache2","_task":"package"}' on ["target1"]
+2021-03-17T16:34:36.571876 DEBUG  [] [Bolt::Transport::SSH] Running task 'package' on target1
+2021-03-17T16:34:36.571645 INFO   [] [Bolt::Executor] Running task package with '{"action":"install","name":"apache2","_task":"package"}' on ["target2"]
+2021-03-17T16:34:36.572788 DEBUG  [] [Bolt::Transport::SSH] Running task 'package' on target2
+2021-03-17T16:34:39.806063 INFO   [] [Bolt::Executor] {"target":"target2","action":"task","object":"package","status":"success","value":{"status":"install ok installed","version":"2.4.29-1ubuntu4.14"}}
+2021-03-17T16:34:39.871311 INFO   [] [Bolt::Executor] {"target":"target1","action":"task","object":"package","status":"success","value":{"status":"install ok installed","version":"2.4.29-1ubuntu4.14"}}
+2021-03-17T16:34:39.873152 INFO   [event-publisher] [Bolt::Outputter::Logger] Finished: Install Apache using the package task with 0 failures in 3.54 sec
+2021-03-17T16:34:39.879121 INFO   [event-publisher] [Bolt::Outputter::Logger] Starting: Start the Apache service on target1, target2
+2021-03-17T16:34:39.879241 INFO   [] [Bolt::Executor] Running script /home/prskid1000/Puppet-Bolt/modules/apache/files/start_apache.sh with '[]' on ["target1"]
+2021-03-17T16:34:39.879679 DEBUG  [] [Bolt::Transport::SSH] Running script '/home/prskid1000/Puppet-Bolt/modules/apache/files/start_apache.sh' on target1
+2021-03-17T16:34:39.879327 INFO   [] [Bolt::Executor] Running script /home/prskid1000/Puppet-Bolt/modules/apache/files/start_apache.sh with '[]' on ["target2"]
+2021-03-17T16:34:39.880054 DEBUG  [] [Bolt::Transport::SSH] Running script '/home/prskid1000/Puppet-Bolt/modules/apache/files/start_apache.sh' on target2
+2021-03-17T16:34:40.010997 INFO   [] [Bolt::Executor] {"target":"target2","action":"script","object":"/home/prskid1000/Puppet-Bolt/modules/apache/files/start_apache.sh","status":"success","value":{"stdout":"Apache is running\n","stderr":"","exit_code":0}}
+2021-03-17T16:34:40.053611 INFO   [] [Bolt::Executor] {"target":"target1","action":"script","object":"/home/prskid1000/Puppet-Bolt/modules/apache/files/start_apache.sh","status":"success","value":{"stdout":"Apache is running\n","stderr":"","exit_code":0}}
+2021-03-17T16:34:40.055730 INFO   [event-publisher] [Bolt::Outputter::Logger] Finished: Start the Apache service with 0 failures in 0.18 sec
+2021-03-17T16:34:40.062648 INFO   [] [Bolt::Executor] Uploading file /home/prskid1000/Puppet-Bolt/modules/apache/files/index.html to /var/www/html/index.html on ["target1"]
+2021-03-17T16:34:40.063124 DEBUG  [] [Bolt::Transport::SSH] Uploading: '/home/prskid1000/Puppet-Bolt/modules/apache/files/index.html' to /var/www/html/index.html on target1
+2021-03-17T16:34:40.062988 INFO   [event-publisher] [Bolt::Outputter::Logger] Starting: Upload site contents on target1, target2
+2021-03-17T16:34:40.062744 INFO   [] [Bolt::Executor] Uploading file /home/prskid1000/Puppet-Bolt/modules/apache/files/index.html to /var/www/html/index.html on ["target2"]
+2021-03-17T16:34:40.063620 DEBUG  [] [Bolt::Transport::SSH] Uploading: '/home/prskid1000/Puppet-Bolt/modules/apache/files/index.html' to /var/www/html/index.html on target2
+2021-03-17T16:34:40.165823 INFO   [] [Bolt::Executor] {"target":"target2","action":"upload","object":"/home/prskid1000/Puppet-Bolt/modules/apache/files/index.html","status":"success","value":{"_output":"Uploaded '/home/prskid1000/Puppet-Bolt/modules/apache/files/index.html' to '127.0.0.1:/var/www/html/index.html'"}}
+2021-03-17T16:34:40.165953 INFO   [] [Bolt::Executor] {"target":"target1","action":"upload","object":"/home/prskid1000/Puppet-Bolt/modules/apache/files/index.html","status":"success","value":{"_output":"Uploaded '/home/prskid1000/Puppet-Bolt/modules/apache/files/index.html' to '127.0.0.1:/var/www/html/index.html'"}}
+2021-03-17T16:34:40.167294 INFO   [event-publisher] [Bolt::Outputter::Logger] Finished: Upload site contents with 0 failures in 0.1 sec
+2021-03-17T16:34:40.167517 INFO   [event-publisher] [Bolt::Outputter::Logger] Finished: plan apache::install in 3.85 sec

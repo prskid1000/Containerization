@@ -1,0 +1,84 @@
+sudo apt-get install docker
+sudo apt-get install docker-compose
+
+wget https://apt.puppet.com/puppet-tools-release-focal.deb
+sudo dpkg -i puppet-tools-release-focal.deb
+sudo apt-get update 
+sudo apt-get install puppet-bolt
+
+mkdir Puppet-Bolt
+cd Puppet-Bolt
+bolt project init Puppet-Bolt
+mkdir -p modules/apache/plans
+mkdir -p modules/apache/files
+
+sudo docker-compose up -d --build
+sudo docker-compose ps
+
+
+bolt command run <COMMAND> --targets <TARGET_NAME> <OPTIONS>
+bolt command run whoami -t 127.0.0.1:6000 -u root -p root --no-host-key-check
+
+bolt command run whoami -t target1
+bolt command run whoami -t target2
+
+bolt plan run apache::install -t containers
+bolt plan run apache::install -t containers src=apache/index.html
+
+
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+sudo swapoff -a
+sudo sed -i '/ swap / s/^/#/' /etc/fstab
+
+sudo apt-get install kubeadm kubelet kubectl
+systemctl enable kubelet
+
+sudo nano /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=systemd"]
+}
+
+sudo kubeadm init --apiserver-advertise-address=192.168.43.142 --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors all
+
+sudo kubeadm join 192.168.43.142:6443 --token 7g3zax.4w4epvnr81lhq4v9 \
+    --discovery-token-ca-cert-hash sha256:a836701ab2fb84dc7a6300c29a3896a07b4b4226e4b0361728f97db991733a91  --ignore-preflight-errors all
+
+sudo rm -r $HOME/.kube
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+kubectl -n kube-system get deployment coredns -o yaml |   sed 's/allowPrivilegeEscalation: false/allowPrivilegeEscalation: true/g' |   kubectl apply -f -
+kubectl taint nodes --all node-role.kubernetes.io/master
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
+kubectl create clusterrolebinding root-cluster-admin-binding --clusterrole=cluster-admin --user=root
+
+kubectl apply -f kube-admin.yaml
+kubectl apply -f kube-rbac.yaml
+SA_NAME="kube-admin"
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep ${SA_NAME} | awk '{print $1}')
+
+kubectl get pods --all-namespaces
+kubectl proxy
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+sudo kubeadm reset
+sudo apt-get purge kubeadm kubectl kubelet kubernetes-cni kube*
+sudo apt-get autoremove
+sudo rm -rf ~/.kube
+
+
+kubectl apply -f sshpod.yaml
+kubectl get deployments
+kubectl get services
+kubectl delete -f sshpod.yaml
+
+sudo docker-compose up -d --build
+sudo docker-compose ps
+sudo  docker-compose run --publish 5050:3000 fcehg
+

@@ -1,0 +1,9 @@
+---
+name: bolt_project
+modules: []
+plans:
+- myproject::*
+tasks:
+- myproject::*
+files:
+- myproject::*
