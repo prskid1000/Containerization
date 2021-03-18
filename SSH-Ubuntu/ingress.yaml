@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ssh-ubuntu-ingress
+spec:
+  rules:
+  - host: "ssh-ubuntu-1.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: ssh-ubuntu-scv-1
+            port:
+              number: 31464
+  - host: "ssh-ubuntu-2.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: ssh-ubuntu-scv-2
+            port:
+              number: 30862
