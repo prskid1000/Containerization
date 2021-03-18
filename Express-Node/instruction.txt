@@ -29,3 +29,8 @@ curl http://192.168.43.142:32008/ping
 
 sudo nano /etc/hosts
 192.168.43.142  kubeport
+
+kubectl delete -f deployment.yaml
+kubectl delete -f ingress.yaml
+kubectl delete svc express-node-scv-1
+kubectl delete svc express-node-scv-2
