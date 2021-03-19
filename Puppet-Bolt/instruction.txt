@@ -65,6 +65,8 @@ kubectl get pods --all-namespaces
 kubectl proxy
 http://localhost:8001/api/v1/namespaces/
 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+
 sudo kubeadm reset
 sudo apt-get purge kubeadm kubectl kubelet kubernetes-cni kube*
 sudo apt-get autoremove
