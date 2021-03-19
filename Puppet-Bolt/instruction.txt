@@ -1,6 +1,10 @@
 sudo apt-get install docker
 sudo apt-get install docker-compose
 
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker 
+
 wget https://apt.puppet.com/puppet-tools-release-focal.deb
 sudo dpkg -i puppet-tools-release-focal.deb
 sudo apt-get update 
@@ -55,30 +59,13 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl -n kube-system get deployment coredns -o yaml |   sed 's/allowPrivilegeEscalation: false/allowPrivilegeEscalation: true/g' |   kubectl apply -f -
 kubectl taint nodes --all node-role.kubernetes.io/master
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
-kubectl create clusterrolebinding root-cluster-admin-binding --clusterrole=cluster-admin --user=root
 
-kubectl apply -f kube-admin.yaml
-kubectl apply -f kube-rbac.yaml
-SA_NAME="kube-admin"
-kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep ${SA_NAME} | awk '{print $1}')
 
 kubectl get pods --all-namespaces
 kubectl proxy
-http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+http://localhost:8001/api/v1/namespaces/
 
 sudo kubeadm reset
 sudo apt-get purge kubeadm kubectl kubelet kubernetes-cni kube*
 sudo apt-get autoremove
 sudo rm -rf ~/.kube
-
-
-kubectl apply -f sshpod.yaml
-kubectl get deployments
-kubectl get services
-kubectl delete -f sshpod.yaml
-
-sudo docker-compose up -d --build
-sudo docker-compose ps
-sudo  docker-compose run --publish 5050:3000 fcehg
-

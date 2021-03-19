@@ -1,8 +1,5 @@
-sudo groupadd docker
-sudo usermod -aG docker $USER
-newgrp docker 
-
-docker build . --rm --label ssh-ubuntu
+docker build . --rm
+docker tag 11b57446b036 prskid1000/ssh-ubuntu
 
 sudo docker login
 sudo docker push prskid1000/ssh-ubuntu
@@ -14,26 +11,26 @@ kubectl get deploy,po
 
 kubectl exec deployment.apps/ssh-ubuntu df /disk
 
-kubectl expose pod ssh-ubuntu-84dbb58986-cxfsz --port=22 --name=ssh-ubuntu-scv-1-22 --type=NodePort
-kubectl expose pod ssh-ubuntu-84dbb58986-cxfsz --port=80 --name=ssh-ubuntu-scv-1-80 --type=NodePort
-kubectl expose pod ssh-ubuntu-84dbb58986-cxfsz --port=3000 --name=ssh-ubuntu-scv-1-3000 --type=NodePort
+kubectl expose pod ssh-ubuntu-84dbb58986-8n728 --port=22 --name=ssh-ubuntu-scv-1-22 --type=NodePort
+kubectl expose pod ssh-ubuntu-84dbb58986-8n728 --port=80 --name=ssh-ubuntu-scv-1-80 --type=NodePort
+kubectl expose pod ssh-ubuntu-84dbb58986-8n728 --port=3000 --name=ssh-ubuntu-scv-1-3000 --type=NodePort
 
-kubectl expose pod ssh-ubuntu-84dbb58986-jcbqv --port=22 --name=ssh-ubuntu-scv-2-22 --type=NodePort
-kubectl expose pod ssh-ubuntu-84dbb58986-jcbqv --port=80 --name=ssh-ubuntu-scv-2-80 --type=NodePort
-kubectl expose pod ssh-ubuntu-84dbb58986-jcbqv --port=3000 --name=ssh-ubuntu-scv-2-3000 --type=NodePort
+kubectl expose pod ssh-ubuntu-84dbb58986-jfhkp --port=22 --name=ssh-ubuntu-scv-2-22 --type=NodePort
+kubectl expose pod ssh-ubuntu-84dbb58986-jfhkp --port=80 --name=ssh-ubuntu-scv-2-80 --type=NodePort
+kubectl expose pod ssh-ubuntu-84dbb58986-jfhkp --port=3000 --name=ssh-ubuntu-scv-2-3000 --type=NodePort
 
 kubectl get svc 
 kubectl cluster-info
-kubectl get pods --all-namespaces
+kubectl get all --all-namespaces
 
-ssh root@192.168.43.142 -p 32055
-ssh root@192.168.43.142 -p 30778
+ssh root@192.168.43.142 -p 31435
+ssh root@192.168.43.142 -p 30983
 pass = 1234
 
 apache2ctl start
 
-curl http://192.168.43.142:31481
-curl http://192.168.43.142:31001
+curl http://192.168.43.142:31030
+curl http://192.168.43.142:31549
 
 
 kubectl delete -f deployment.yaml

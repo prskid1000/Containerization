@@ -9,7 +9,7 @@ sudo docker tag express-node_express_node  prskid1000/express_node
 sudo docker-compose run -it --publish 3001:3001 prskid1000/express_node
 
 sudo docker login
-sudo docker push prskid1000/fcehg
+sudo docker push prskid1000/express_node
 
 kubectl create -f deployment.yaml
 
@@ -22,15 +22,6 @@ kubectl expose pod express-node-5447c78d4-scc4q --port=3001 --name=express-node-
 kubectl cluster-info
 curl http://192.168.43.142:31431/ping
 
-kubectl apply -f ingress.yaml
-kubectl get ingress
-curl http://192.168.43.142:31431/ping
-curl http://192.168.43.142:32008/ping
-
-sudo nano /etc/hosts
-192.168.43.142  kubeport
-
 kubectl delete -f deployment.yaml
-kubectl delete -f ingress.yaml
 kubectl delete svc express-node-scv-1
 kubectl delete svc express-node-scv-2

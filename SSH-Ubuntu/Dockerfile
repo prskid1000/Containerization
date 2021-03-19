@@ -16,7 +16,5 @@ RUN apt-get install npm -y
 RUN apt-get install apache2 -y
 RUN apt-get install nano -y
 RUN apt-get install nodejs -y
-RUN apache2ctl start
-RUN npm -v
 EXPOSE 22 80 3000
 CMD ["/usr/sbin/sshd", "-D"]
