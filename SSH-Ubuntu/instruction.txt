@@ -2,11 +2,7 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker 
 
-sudo docker-compose up -d --build
-sudo docker-compose ps
-sudo docker-compose down
-
-sudo docker tag ssh-ubuntu_express_node  prskid1000/ssh-ubuntu
+docker build . --rm --label ssh-ubuntu
 
 sudo docker login
 sudo docker push prskid1000/ssh-ubuntu
@@ -15,23 +11,36 @@ kubectl create -f deployment.yaml
 
 kubectl describe pod
 kubectl get deploy,po
-kubectl get svc 
 
 kubectl exec deployment.apps/ssh-ubuntu df /disk
 
-kubectl expose pod ssh-ubuntu-578b77775-8ffsg --port=22 --name=ssh-ubuntu-scv-1 --type=NodePort
-kubectl expose pod ssh-ubuntu-578b77775-x5mww --port=22 --name=ssh-ubuntu-scv-2 --type=NodePort
-kubectl cluster-info
+kubectl expose pod ssh-ubuntu-84dbb58986-cxfsz --port=22 --name=ssh-ubuntu-scv-1-22 --type=NodePort
+kubectl expose pod ssh-ubuntu-84dbb58986-cxfsz --port=80 --name=ssh-ubuntu-scv-1-80 --type=NodePort
+kubectl expose pod ssh-ubuntu-84dbb58986-cxfsz --port=3000 --name=ssh-ubuntu-scv-1-3000 --type=NodePort
 
+kubectl expose pod ssh-ubuntu-84dbb58986-jcbqv --port=22 --name=ssh-ubuntu-scv-2-22 --type=NodePort
+kubectl expose pod ssh-ubuntu-84dbb58986-jcbqv --port=80 --name=ssh-ubuntu-scv-2-80 --type=NodePort
+kubectl expose pod ssh-ubuntu-84dbb58986-jcbqv --port=3000 --name=ssh-ubuntu-scv-2-3000 --type=NodePort
+
+kubectl get svc 
+kubectl cluster-info
+kubectl get pods --all-namespaces
+
+ssh root@192.168.43.142 -p 30778
+ssh root@192.168.43.142 -p 32055
+pass = 1234
+
+apache2ctl start
+
+curl http://192.168.43.142:31481
+curl http://192.168.43.142:31001
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.44.0/deploy/static/provider/baremetal/deploy.yaml
+kubectl get pods -n ingress-nginx -l app.kubernetes.io/name=ingress-nginx
 kubectl apply -f ingress.yaml
 kubectl get ingress
-
-ssh root@192.168.43.142 -p 32515
-ssh root@192.168.43.142 -p 30451
-pass = screencast
-
-sudo nano /etc/hosts
-192.168.43.142  kubeport
+kubectl -n ingress-nginx get svc
+curl http://192.168.43.142:30598
 
 kubectl delete -f deployment.yaml
 kubectl delete -f ingress.yaml

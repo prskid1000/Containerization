@@ -4,23 +4,33 @@ metadata:
   name: ssh-ubuntu-ingress
 spec:
   rules:
-  - host: "ssh-ubuntu-1.com"
-    http:
+  - http:
       paths:
       - pathType: Prefix
-        path: "/"
+        path: "/apache/1"
         backend:
           service:
-            name: ssh-ubuntu-scv-1
+            name: ssh-ubuntu-scv-1-80
             port:
-              number: 32515
-  - host: "ssh-ubuntu-2.com"
-    http:
-      paths:
+              number: 31001
       - pathType: Prefix
-        path: "/"
+        path: "/node/1"
         backend:
           service:
-            name: ssh-ubuntu-scv-2
+            name: ssh-ubuntu-scv-1-3000
             port:
-              number: 30451
+              number: 30457
+      - pathType: Prefix
+        path: "/apache/2"
+        backend:
+          service:
+            name: ssh-ubuntu-scv-2-80
+            port:
+              number: 31481
+      - pathType: Prefix
+        path: "/node/2"
+        backend:
+          service:
+            name: ssh-ubuntu-scv-2-3000
+            port:
+              number: 30901

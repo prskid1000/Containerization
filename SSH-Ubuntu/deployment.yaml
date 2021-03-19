@@ -26,6 +26,8 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 22
+        - containerPort: 80
+        - containerPort: 3000
         # livenessProbe:
         #   httpGet:
         #     path: /status

@@ -1,7 +1,0 @@
-version: '3'
-services:
-  express_node:
-    build: .
-    ports:
-      - '3001:22'
-    container_name: ssh-ubuntu
