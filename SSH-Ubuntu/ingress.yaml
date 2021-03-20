@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: shh-ubuntu-ingress
+spec:
+  rules:
+    - host: ssh-ubuntu.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /apache
+            backend:
+              service:
+                name: ssh-ubuntu-80 
+                port:
+                  number: 80
+
+          - pathType: Prefix
+            path: /serve
+            backend:
+              service:
+                name: ssh-ubuntu-3000 
+                port:
+                  number: 3000

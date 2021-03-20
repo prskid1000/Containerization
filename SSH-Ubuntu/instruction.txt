@@ -11,31 +11,28 @@ kubectl get deploy,po
 
 kubectl exec deployment.apps/ssh-ubuntu df /disk
 
-kubectl expose pod ssh-ubuntu-84dbb58986-8n728 --port=22 --name=ssh-ubuntu-scv-1-22 --type=NodePort
-kubectl expose pod ssh-ubuntu-84dbb58986-8n728 --port=80 --name=ssh-ubuntu-scv-1-80 --type=NodePort
-kubectl expose pod ssh-ubuntu-84dbb58986-8n728 --port=3000 --name=ssh-ubuntu-scv-1-3000 --type=NodePort
-
-kubectl expose pod ssh-ubuntu-84dbb58986-jfhkp --port=22 --name=ssh-ubuntu-scv-2-22 --type=NodePort
-kubectl expose pod ssh-ubuntu-84dbb58986-jfhkp --port=80 --name=ssh-ubuntu-scv-2-80 --type=NodePort
-kubectl expose pod ssh-ubuntu-84dbb58986-jfhkp --port=3000 --name=ssh-ubuntu-scv-2-3000 --type=NodePort
+kubectl expose deployment ssh-ubuntu  --type=NodePort --port=80 --name=ssh-ubuntu-80
+kubectl expose deployment ssh-ubuntu  --type=NodePort --port=3000 --name=ssh-ubuntu-3000
 
 kubectl get svc 
 kubectl cluster-info
 kubectl get all --all-namespaces
 
-ssh root@192.168.43.142 -p 31435
-ssh root@192.168.43.142 -p 30983
+kubectl apply -f ingress.yaml
+
+sudo nano /etc/hosts
+192.168.49.2 ssh-ubuntu.com
+
+ssh root@ssh-ubuntu.com -p 31267
 pass = 1234
 
-apache2ctl start
-
-curl http://192.168.43.142:31030
-curl http://192.168.43.142:31549
+service apache2 start
+curl http://ssh-ubuntu.com/apache
+curl http://ssh-ubuntu.com/serve
 
 minikube start
 minikube ssh
 sudo su -
-minikube stop
 minikube delete
 minikube addons list
 minikube dashboard
