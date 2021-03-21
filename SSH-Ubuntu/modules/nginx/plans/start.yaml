@@ -1,0 +1,15 @@
+parameters:
+  targets:
+    type: TargetSpec
+
+steps:
+  - name: start
+    script: nginx/scripts/start.sh
+    targets: $targets
+    description: "Start the nginx service"
+
+  - name: upload
+    upload: nginx/html/
+    destination: /var/www
+    targets: $targets
+    description: "Upload site contents" 

@@ -1,0 +1,20 @@
+parameters:
+  targets:
+    type: TargetSpec
+
+steps:
+  - name: start
+    script: serve/scripts/start.sh
+    targets: $targets
+    description: "Start the serve service"
+
+  - name: upload
+    upload: serve/node/
+    destination: /home/node
+    targets: $targets
+    description: "Upload server contents" 
+
+  - name: node
+    script: serve/scripts/server.sh
+    targets: $targets
+    description: "Start the node service"

@@ -1,0 +1,11 @@
+groups:
+- name: container
+  targets:
+    - uri: ssh-ubuntu.com:32294
+      name: ssh-ubuntu
+  config:
+    transport: ssh
+    ssh:
+      user: root
+      password: '1234'
+      host-key-check: false

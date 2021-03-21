@@ -1,5 +1,7 @@
-docker build . --rm
-docker tag 11b57446b036 prskid1000/ssh-ubuntu
+minikube start
+eval $(minikube docker-env) 
+docker build -t prskid1000/ssh-ubuntu --rm .
+sudo docker run -it -a stdin prskid1000/ssh-ubuntu /bin/bash
 
 sudo docker login
 sudo docker push prskid1000/ssh-ubuntu
@@ -11,24 +13,32 @@ kubectl get deploy,po
 
 kubectl exec deployment.apps/ssh-ubuntu df /disk
 
-kubectl expose deployment ssh-ubuntu  --type=NodePort --port=80 --name=ssh-ubuntu-80
-kubectl expose deployment ssh-ubuntu  --type=NodePort --port=3000 --name=ssh-ubuntu-3000
+kubectl expose deployment ssh-ubuntu --type=NodePort --port=22 --name=ssh-ubuntu-22
+kubectl expose deployment ssh-ubuntu --type=NodePort --port=80 --name=ssh-ubuntu-80
+kubectl expose deployment ssh-ubuntu --type=NodePort --port=3000 --name=ssh-ubuntu-3000
 
 kubectl get svc 
-kubectl cluster-info
-kubectl get all --all-namespaces
-
 kubectl apply -f ingress.yaml
 
+kubectl cluster-info
 sudo nano /etc/hosts
 192.168.49.2 ssh-ubuntu.com
 
-ssh root@ssh-ubuntu.com -p 31267
+kubectl get all --all-namespaces
+
+ssh root@ssh-ubuntu.com -p 32294
 pass = 1234
 
-service apache2 start
-curl http://ssh-ubuntu.com/apache
-curl http://ssh-ubuntu.com/serve
+bolt command run whoami -t ssh-ubuntu
+
+bolt plan run nginx::start -t ssh-ubuntu
+bolt plan run serve::start -t ssh-ubuntu
+
+bolt file upload modules/nginx/files/html/ /var/www/html/ -t ssh-ubuntu
+bolt file download /var/www/html/ modules/nginx/files/ -t ssh-ubuntu
+
+curl http://ssh-ubuntu.com/nginx
+curl http://ssh-ubuntu.com/serve/ping/
 
 minikube start
 minikube ssh

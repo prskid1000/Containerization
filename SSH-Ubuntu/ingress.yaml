@@ -1,14 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: shh-ubuntu-ingress
+  name: ssh-ubuntu-ingress
+  annotations:
 spec:
   rules:
     - host: ssh-ubuntu.com
       http:
         paths:
           - pathType: Prefix
-            path: /apache
+            path: /nginx
             backend:
               service:
                 name: ssh-ubuntu-80 
